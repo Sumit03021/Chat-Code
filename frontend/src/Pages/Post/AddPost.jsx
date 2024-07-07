@@ -13,7 +13,7 @@ function AddPost() {
   let navigate = useNavigate();
   const axiosInstances = SetupAxiosInstances(navigate);
   let userId = localStorage.getItem('userId');
-
+  
   function handleChange(e){
     const {name,value} = e.target;
     setForm({...form,[name]:value});
