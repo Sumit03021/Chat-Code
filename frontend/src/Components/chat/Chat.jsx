@@ -124,6 +124,10 @@ function Chat() {
     };
   },[])
 
+  function handleIconClick(){
+     fileInputRef.current.click();
+  }
+
   return (
     <>
     <Nav/>
