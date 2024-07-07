@@ -14,7 +14,6 @@ function Friends() {
         async function getData(){
         let res = await axiosInstances.get(`/getAllFriends/${userId}`);
         setFriendList([...res.data]);
-        console.log("friend data user: ",res.data);
     }
     getData();
     

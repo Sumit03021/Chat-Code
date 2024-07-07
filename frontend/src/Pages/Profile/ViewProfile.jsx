@@ -10,6 +10,7 @@ import Nav from '../../Components/Nav';
 function ViewProfile() {
     const [activeSection,setActiveSection] = useState('about');
     const [friendList, setFriendList] = useState([]);
+    const [arr, setArr] = useState([]);
     const location = useLocation();
     const profile = location.state?.profile;
     let [pictureLoad,setPictureLoad] = useState(false);
@@ -21,7 +22,28 @@ function ViewProfile() {
     let navigate = useNavigate();
     const axiosInstances = SetupAxiosInstances(navigate);
     
-    
+    async function handleClickChat(item) {
+      sessionStorage.removeItem("current");
+      sessionStorage.removeItem('firstMess');
+      sessionStorage.removeItem("friend")
+      
+      sessionStorage.setItem("current", item._id);
+      sessionStorage.setItem("firstMess", true);
+      sessionStorage.setItem("friendId",item.friendId);
+      let sourceId = localStorage.getItem('token');
+      let targetId = sessionStorage.getItem('current');
+      
+      try {
+        let res = await axiosInstances.get("/user/chat", {
+          params: { sourceId, targetId }
+        });
+        setArr(res.data);
+        navigate("/chat", { state: { arr: res.data } });
+      } catch (error) {
+        console.error('Error fetching chat data:', error);
+      }
+    }
+
     useEffect(()=>{
       async function getFriendList(profileId){
         await axiosInstances.get(`/getAllFriends/${profileId}`)
@@ -117,7 +139,7 @@ function ViewProfile() {
           {profile._id != userId && (
             <>
             {isFriend ? (
-              <Link><button className='px-2 py-2 rounded-md bg-green-600 text-green-300'>Message</button></Link>
+              <button className='px-2 py-2 rounded-md bg-green-600 text-green-300' onClick={()=>handleClickChat(profile)}>Message</button>
             ) : (
               <>
               <button className='px-2 py-2 rounded-md bg-green-600 text-green-300' onClick={()=>{handleFriend(profile._id)}}>Add Friend</button>

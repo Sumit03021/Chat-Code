@@ -18,25 +18,20 @@ function Card({ item }) {
     sessionStorage.setItem("current", item._id);
     sessionStorage.setItem("firstMess", true);
     sessionStorage.setItem("friendId",item.friendId);
-    //66335c3c34022a389bc50a3d    66335c3c34022a389bc50a3d
     let sourceId = localStorage.getItem('token');
     let targetId = sessionStorage.getItem('current');
-    
+
     try {
       let res = await axiosInstances.get("/user/chat", {
         params: { sourceId, targetId }
       });
       setArr(res.data);
-      console.log(res.data);
-
-      // Navigate to the chat route with state after setting the arr
       navigate("/chat", { state: { arr: res.data } });
     } catch (error) {
       console.error('Error fetching chat data:', error);
     }
   }
 
-  
   useEffect(()=>{
     async function getFriendList(userId){
       await axiosInstances.get(`/getAllFriends/${userId}`)
@@ -104,11 +99,11 @@ function Card({ item }) {
         {item._id != userId && (
           <>
           {isFriend ? (
-        <button onClick={handleClickChat} className="bg-cyan-400 text-white xs:py-1 xs:px-2 py-1 px-2 rounded-md hover:bg-cyan-500 transition duration-300">
+        <button onClick={handleClickChat} className="bg-cyan-400 text-white xs:py-1 xs:px-2 py-1 px-2 rounded-md hover:bg-cyan-500 transition duration-300 cursor-pointer">
         Message
       </button>
           ):(
-            <button className='bg-cyan-400 text-white xs:py-1 xs:px-2 py-1 px-2 rounded-md hover:bg-cyan-500 duration-300 line-clamp-1 group-hover:line-clamp-none transition-all ease-in-out' onClick={()=>{handleFriend(item._id)}}>Add Friend</button>
+            <button className='bg-cyan-400 text-white xs:py-1 xs:px-2 py-1 px-2 rounded-md hover:bg-cyan-500 duration-300 line-clamp-1 group-hover:line-clamp-none transition-all ease-in-out cursor-pointer' onClick={()=>{handleFriend(item._id)}}>Add Friend</button>
           )}
           </>
         )}
