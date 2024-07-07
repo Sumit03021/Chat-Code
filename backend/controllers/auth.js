@@ -31,9 +31,7 @@ router.post("/signup", async (req, res) => {
 //validate user
 router.post("/login", async(req, res) => {
     try {
-      console.log("hello")
         let { userName, password } = req.body;
-        console.log(userName,password);
         if (!userName || !password) {
            return res.status(400).send({ message: "username and password are required" });
         }
@@ -62,7 +60,6 @@ router.get("/check",async (req,res)=>{
         const authHeader = req.headers['authorization'];
         const token = authHeader && authHeader.split(' ')[1];
         let item= getUser(token);
-        console.log(item);
         res.send({ message: "ok",token:token});
     }
     catch(err){

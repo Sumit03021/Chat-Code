@@ -17,10 +17,6 @@ router.get("/friendRequest/:id", validateUser,existingFriendOrNot, async(req,res
         }
         let friendObj= await Friend.create({sourceId:userId,targetId:id});
         await friendObj.save();
-        console.log("Type of friendObj:", typeof friendObj);
-        console.log("Instance of friendObj:", friendObj instanceof Friend);
-        console.log("Type of friendObj._id:", typeof friendObj._id);
-        console.log("Instance of friendObj._id:", friendObj._id instanceof mongoose.Types.ObjectId);
  let notificationObj1={
     friend:friendObj._id,
     category:"sendRequest",

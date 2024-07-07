@@ -23,11 +23,8 @@ function chat(server) {
 
   io.on("connection", (socket) => {
     socket.on("joinRoom", (room) => {
-      console.log(room);
       socket.join(room);
       socket.room = room; // Save the room in the socket instance
-      console.log(`socket room connection address1 ${socket.room}`)
-      console.log(`socket room connection address2 ${socket.rooms}`)
     });
 
     socket.on("leaveRoom", (room) => {

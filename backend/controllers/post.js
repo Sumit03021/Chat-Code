@@ -7,16 +7,12 @@ const { validateUser } = require("../middleware/postMiddleware");
 router.post("/addPost", validateUser, async (req, res) => {
   try {
     let userId = req.user.id;
-    console.log(userId)
-    console.log(req.user);
-    console.log(userId);
     let user = await User.findById(userId);
     if (!user) {
       res.status(404).send({ message: "user not found" });
     }
     let { title, upload, desc } = req.body;
     let newPost = await Post.create({ userId, title, upload, desc });
-    console.log(newPost);
     await newPost.save();
     user.posts.push(newPost);
     await user.save();
