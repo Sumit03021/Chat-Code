@@ -17,6 +17,7 @@ function Nav() {
     if (token && expirationTime && currentTime < parseInt(expirationTime, 10)) {
       setIsLoggedIn(true);
     } else {
+      localStorage.removeItem('userId');
       localStorage.removeItem('token');
       localStorage.removeItem('expirationTime');
       setIsLoggedIn(false);

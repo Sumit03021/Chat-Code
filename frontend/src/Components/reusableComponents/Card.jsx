@@ -17,7 +17,16 @@ function Card({ item }) {
     
     sessionStorage.setItem("current", item._id);
     sessionStorage.setItem("firstMess", true);
-    sessionStorage.setItem("friendId",item.friendId);
+    await axiosInstances.get(`/find-friend/${item._id}`)
+    .then((res)=>{
+      sessionStorage.setItem("friendId",res.data.friendId._id);
+      console.log("response in card.jsx: ",res.data.friendId._id);
+      console.log("response session storage: ",sessionStorage.getItem('friendId'));
+    })
+    .catch((e)=>{
+      console.log("error in find friend card.jsx ",e);
+    })
+    console.log("friendId in card.jsx: ",item.friendId);
     let sourceId = localStorage.getItem('token');
     let targetId = sessionStorage.getItem('current');
 
@@ -38,13 +47,14 @@ function Card({ item }) {
       .then((res)=>{
        const friendId = res.data ? res.data.map(friend => friend._id) : [];
        setIsFriend(friendId.includes(item._id));
-       console.log("friend data: ",res.data);
       })
       .catch((e)=>{
         console.log("failed to load friendLIst: ",e);
       })
     }
-    if(userId){
+    let expirationTime = localStorage.getItem('expirationTime');
+    let currentTime = Date.now();
+    if(userId && expirationTime && currentTime < parseInt(expirationTime, 10)){
       getFriendList(userId);
     }
   },[userId])

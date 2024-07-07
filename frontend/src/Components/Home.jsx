@@ -23,7 +23,6 @@ function Home() {
       let res = await axiosInstances.get("/getAll");
       if(res.status == 200){
         setObj(res.data);
-        console.log("all user data: ",res.data);
       }
     }
     catch(err){
@@ -36,9 +35,7 @@ function Home() {
       let res = await axiosInstances.get(`/allPosts?page=${page}`);
       if(res.status == '200'){
         setPost(res.data.posts);
-        console.log("all posts data: ",res.data.posts);
         setTotalPages(res.data.totalPages);
-        console.log("all pages: ",res.data.totalPages);
       }
     }catch(err){
     console.log("error in fetch all posts: ",err);
@@ -50,13 +47,12 @@ function Home() {
     await axiosInstances.get(`/user/${userId}`)
     .then((res)=>{
      setUser(res.data);
-     console.log("user login: ",res.data);
     })
     .catch((e)=>{
       console.log("failed to load user: ",e);
     })
   }
-
+  
   useEffect(() => {
     fetchdata();
     let expirationTime = localStorage.getItem('expirationTime');

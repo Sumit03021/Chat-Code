@@ -16,7 +16,6 @@ function Friends() {
         setFriendList([...res.data]);
     }
     getData();
-    
     },[])
 
   return (

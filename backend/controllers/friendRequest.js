@@ -144,8 +144,10 @@ try{
   let sender = await User.findById(userId).select('firstName lastName photo');
   let receiver = await User.findById(id).select('firstName lastName photo');
   let friendObj = {};
+  let friendId = await Friend.findOne({$or:[{sourceId:userId,targetId:id},{sourceId:id,targetId:userId}]}).select('sourceId targetId');
   friendObj.sender = sender;
   friendObj.receiver = receiver;
+  friendObj.friendId = friendId;
   return res.status(201).send(friendObj);
 }
 catch(e){

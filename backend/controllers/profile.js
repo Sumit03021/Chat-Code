@@ -16,7 +16,7 @@ router.get("/getAll", async (req, res) => {
 
 
 // finding a particular user
-router.get("/user/:id",async(req,res)=>{
+router.get("/user/:id",validateUser , async(req,res)=>{
   try{
     let {id}= req.params;
     let user= await User.findById(id).populate('education').populate({path:'posts',populate:{path:'userId comments.commentedBy',select:'firstName lastName photo'}}).populate({path:'friends',select:'photo userName'}).populate({path:'notifications',populate:{path:'friend',select:'firstName lastName userName'}});
