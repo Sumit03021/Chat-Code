@@ -49,16 +49,16 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(methodOverride("_method"));
 
-const uploadDir = path.join(__dirname, 'controllers/sockets/assets'); 
-app.use('/assets', express.static(uploadDir));
+// const uploadDir = path.join(__dirname, 'controllers/sockets/assets'); 
+// app.use('/assets', express.static(uploadDir));
 // Use /tmp directory for serverless environment
 // const uploadDir = path.join('/tmp', 'controllers/sockets/assets');
 // app.use('/assets', express.static(uploadDir));
 
 // Ensure the directory exists
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
-}
+// if (!fs.existsSync(uploadDir)) {
+//     fs.mkdirSync(uploadDir, { recursive: true });
+// }
 
 app.use(cookieParser());
 app.use(chatMessages);
