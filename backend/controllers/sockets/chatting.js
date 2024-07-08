@@ -112,6 +112,13 @@ function chat(server) {
     socket.on("connect_error", (error) => {
       console.error("Connection Error:", error);
     });
+    socket.on("reconnect_attempt", () => {
+      console.log(`Attempting to reconnect: ${socket.id}`);
+    });
+
+    socket.on("reconnect_failed", () => {
+      console.error(`Reconnect failed: ${socket.id}`);
+    });
   });
 }
 

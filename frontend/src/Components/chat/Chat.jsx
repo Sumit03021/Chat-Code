@@ -76,7 +76,18 @@ function Chat() {
     socket.current.on("connect_error", (error) => {
       console.error("Connection Error:", error);
     });
-
+    socket.current.on("error", (error) => {
+      console.error("Socket Error:", error);
+    });
+  
+    socket.current.on("reconnect_attempt", () => {
+      console.log("Reconnecting...");
+    });
+  
+    socket.current.on("reconnect_failed", () => {
+      console.error("Reconnect Failed");
+    });
+    
     return () => {
       socket.current.emit('leaveRoom', room);
       socket.current.disconnect();
