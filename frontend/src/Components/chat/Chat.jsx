@@ -42,8 +42,6 @@ function Chat() {
 
   useEffect(() => {
     socket.current = io(import.meta.VITE_BACKEND_API, {
-      transports: ["websocket", "polling"], // Ensure transport fallback
-      withCredentials: true,
       auth: {
         serverOffset: 0
       }
@@ -56,38 +54,13 @@ function Chat() {
     let room = sessionStorage.getItem("friendId");
     
     console.log("Connecting to room:", room);
-
-    socket.current.on("connect", () => {
-      console.log("Connected to the server");
       socket.current.emit('joinRoom', room);
-    });
 
     // Receiving message
     socket.current.on("message", (msg) => {
-      console.log("receving message");
       sessionStorage.setItem('firstMess', false);
       setMessages((prevMessages) => [...prevMessages, msg]);
     });
-
-    socket.current.on("disconnect", (reason) => {
-      console.log("Disconnected from server:", reason);
-    });
-
-    socket.current.on("connect_error", (error) => {
-      console.error("Connection Error:", error);
-    });
-    socket.current.on("error", (error) => {
-      console.error("Socket Error:", error);
-    });
-  
-    socket.current.on("reconnect_attempt", () => {
-      console.log("Reconnecting...");
-    });
-  
-    socket.current.on("reconnect_failed", () => {
-      console.error("Reconnect Failed");
-    });
-    
     return () => {
       socket.current.emit('leaveRoom', room);
       socket.current.disconnect();
