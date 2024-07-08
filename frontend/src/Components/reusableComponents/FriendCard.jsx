@@ -16,8 +16,13 @@ function FriendCard({item}) {
     
     sessionStorage.setItem("current", item._id);
     sessionStorage.setItem("firstMess", true);
-    sessionStorage.setItem("friendId",item.friendId);
-    //66335c3c34022a389bc50a3d    66335c3c34022a389bc50a3d
+    await axiosInstances.get(`/find-friend/${item._id}`)
+    .then((res)=>{
+      sessionStorage.setItem("friendId",res.data.friendId._id);
+    })
+    .catch((e)=>{
+      console.log("error in find friend card.jsx ",e);
+    })
     let sourceId = localStorage.getItem('token');
     let targetId = sessionStorage.getItem('current');
     
