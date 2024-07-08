@@ -6,9 +6,9 @@ const Friend = require("../../models/Friend");
 const Chat = require("../../models/Chat");
 const dotenv = require('dotenv').config({path:path.resolve(__dirname,'../../.env')});
 const uploadDir = path.join(__dirname, "assets");
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir);
-}
+// if (!fs.existsSync(uploadDir)) {
+//   fs.mkdirSync(uploadDir);
+// }
 
 function chat(server) {
   const io = new Server(server, {
@@ -56,38 +56,6 @@ function chat(server) {
           friend.chats.push(newChat);
           friend.save();
           console.log(`Emitting success message ${socket.room}`)
-        }
-
-        if (fileData) {
-          // Decode the base64 file data
-          const buffer = Buffer.from(fileData, "base64");
-
-          // Save the file to the server
-          const filePath = path.join(uploadDir, fileName);
-          fs.writeFile(filePath, buffer, (err) => {
-            if (err) {
-              console.error("Failed to write file", err);
-              return;
-            }
-            console.log("File uploaded successfully", filePath);
-
-            const fileMessage = {
-              sourceId,
-              targetId,
-              message: `File uploaded: ${fileName}`,
-              filePath,
-              fileUrl: `http://localhost:8080/assets/${fileName}` // Assuming your static files are served from /assets
-            };
-
-            console.log(`Emitting message to room: ${socket.room}`);
-          if (socket.room) {
-            console.log("hello");
-            io.to(socket.room).emit("message", fileMessage);
-          } else {
-            console.log("No room joined");
-          }
-          });
-        } else {
           const textMessage = { sourceId, targetId, message };
           console.log(` emit message ${socket.room}`);
           if (socket.room) {
@@ -95,6 +63,44 @@ function chat(server) {
             console.log("successfully text message delivered.")
           }
         }
+
+        // if (fileData) {
+        //   // Decode the base64 file data
+        //   const buffer = Buffer.from(fileData, "base64");
+
+        //   // Save the file to the server
+        //   const filePath = path.join(uploadDir, fileName);
+        //   fs.writeFile(filePath, buffer, (err) => {
+        //     if (err) {
+        //       console.error("Failed to write file", err);
+        //       return;
+        //     }
+        //     console.log("File uploaded successfully", filePath);
+
+        //     const fileMessage = {
+        //       sourceId,
+        //       targetId,
+        //       message: `File uploaded: ${fileName}`,
+        //       filePath,
+        //       fileUrl: `http://localhost:8080/assets/${fileName}` // Assuming your static files are served from /assets
+        //     };
+
+        //     console.log(`Emitting message to room: ${socket.room}`);
+        //   if (socket.room) {
+        //     console.log("hello");
+        //     io.to(socket.room).emit("message", fileMessage);
+        //   } else {
+        //     console.log("No room joined");
+        //   }
+        //   });
+        // } else {
+        //   const textMessage = { sourceId, targetId, message };
+        //   console.log(` emit message ${socket.room}`);
+        //   if (socket.room) {
+        //     io.to(socket.room).emit("message", textMessage);
+        //     console.log("successfully text message delivered.")
+        //   }
+        // }
       } catch (err) {
         console.error(err);
       }
