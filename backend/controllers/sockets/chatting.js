@@ -1,4 +1,3 @@
-
 const { Server } = require("socket.io");
 const fs = require("fs");
 const path = require("path");
@@ -18,16 +17,20 @@ function chat(server) {
       methods: ["GET", "POST"],
       credentials: true,
     },
+    transports: ['websocket', 'polling'], // Ensure transport fallback
     connectionStateRecovery: {},
   });
 
   io.on("connection", (socket) => {
+    console.log(`Client connected: ${socket.id}`);
     socket.on("joinRoom", (room) => {
+      console.log(`Client ${socket.id} joining room: ${room}`);
       socket.join(room);
       socket.room = room; // Save the room in the socket instance
     });
 
     socket.on("leaveRoom", (room) => {
+      console.log(`Client ${socket.id} leaving room: ${room}`);
       socket.leave(room);
       delete socket.room; // Remove the room from the socket instance
     });
@@ -89,11 +92,19 @@ function chat(server) {
           console.log(` emit message ${socket.room}`);
           if (socket.room) {
             io.to(socket.room).emit("message", textMessage);
+            console.log("successfully text message delivered.")
           }
         }
       } catch (err) {
         console.error(err);
       }
+    });
+    socket.on("disconnect", (reason) => {
+      console.log("Client disconnected:", socket.id, "Reason:", reason);
+    });
+
+    socket.on("connect_error", (error) => {
+      console.error("Connection Error:", error);
     });
   });
 }

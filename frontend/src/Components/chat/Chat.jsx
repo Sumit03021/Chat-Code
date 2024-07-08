@@ -42,6 +42,8 @@ function Chat() {
 
   useEffect(() => {
     socket.current = io(import.meta.VITE_BACKEND_API, {
+      transports: ["websocket", "polling"], // Ensure transport fallback
+      withCredentials: true,
       auth: {
         serverOffset: 0
       }
@@ -52,14 +54,27 @@ function Chat() {
     
     // Join the unique room
     let room = sessionStorage.getItem("friendId");
-    console.log(room);
-    socket.current.emit('joinRoom', room);
+    
+    console.log("Connecting to room:", room);
+
+    socket.current.on("connect", () => {
+      console.log("Connected to the server");
+      socket.current.emit('joinRoom', room);
+    });
 
     // Receiving message
     socket.current.on("message", (msg) => {
       console.log("receving message");
       sessionStorage.setItem('firstMess', false);
       setMessages((prevMessages) => [...prevMessages, msg]);
+    });
+
+    socket.current.on("disconnect", (reason) => {
+      console.log("Disconnected from server:", reason);
+    });
+
+    socket.current.on("connect_error", (error) => {
+      console.error("Connection Error:", error);
     });
 
     return () => {
@@ -101,10 +116,6 @@ function Chat() {
     }
   }
 
-
-// console.log(messages);
-
-  // Handle file change
   function handleFileChange(e) {
     setFile(e.target.files[0]);
     setUpload(true);
@@ -150,7 +161,7 @@ function Chat() {
       <div className='w-full bg-gradient-to-r from-red-50 mb-11 to-red-400 p-4 overflow-y-auto h-screen-112 xs:h-screen-152 sm:h-screen-160 md:h-screen-168 lg:h-screen-176 xs:relative xs:top-14' style={{scrollbarWidth:'none'}}>
         <ul className='space-y-3'>
           {messages.map((item,index)=>(
-            <li key={item._id} className= {`flex ${item.sourceId == userId ? 'justify-end':'justify-start'}`}>
+            <li key={index} className= {`flex ${item.sourceId == userId ? 'justify-end':'justify-start'}`}>
              <div className={`${item.sourceId == userId ? 'bg-green-300 text-black' : 'bg-gray-100 text-black'} w-auto py-2 px-3 rounded-md shadow-lg max-w-[150px] text-sm xs:max-w-[200px] xs:text-base sm:max-w-[225px] md:max-w-[300px] md:text-lg lg:max-w-[350px] font-medium`}>
              <p>{item.message}</p>
              {item.fileUrl && (

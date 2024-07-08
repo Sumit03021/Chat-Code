@@ -20,13 +20,10 @@ function Card({ item }) {
     await axiosInstances.get(`/find-friend/${item._id}`)
     .then((res)=>{
       sessionStorage.setItem("friendId",res.data.friendId._id);
-      console.log("response in card.jsx: ",res.data.friendId._id);
-      console.log("response session storage: ",sessionStorage.getItem('friendId'));
     })
     .catch((e)=>{
       console.log("error in find friend card.jsx ",e);
     })
-    console.log("friendId in card.jsx: ",item.friendId);
     let sourceId = localStorage.getItem('token');
     let targetId = sessionStorage.getItem('current');
 

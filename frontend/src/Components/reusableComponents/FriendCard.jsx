@@ -16,8 +16,13 @@ function FriendCard({item}) {
     
     sessionStorage.setItem("current", item._id);
     sessionStorage.setItem("firstMess", true);
-    sessionStorage.setItem("friendId",item.friendId);
-    //66335c3c34022a389bc50a3d    66335c3c34022a389bc50a3d
+    await axiosInstances.get(`/find-friend/${item._id}`)
+    .then((res)=>{
+      sessionStorage.setItem("friendId",res.data.friendId._id);
+    })
+    .catch((e)=>{
+      console.log("error in find friend card.jsx ",e);
+    })
     let sourceId = localStorage.getItem('token');
     let targetId = sessionStorage.getItem('current');
     
@@ -26,9 +31,6 @@ function FriendCard({item}) {
         params: { sourceId, targetId }
       });
       setArr(res.data);
-      console.log(res.data);
-
-      // Navigate to the chat route with state after setting the arr
       navigate("/chat", { state: { arr: res.data } });
     } catch (error) {
       console.error('Error fetching chat data:', error);
@@ -46,7 +48,6 @@ function FriendCard({item}) {
     })
   }
 
-  
   return (
     <div className="flex gap-4 items-center py-4 px-2 mb-2 sm:mb-4 bg-white shadow-lg rounded-lg" key={item._id}>
       <div className='cursor-pointer' onClick={()=>{handleProfile(item._id)}}>
