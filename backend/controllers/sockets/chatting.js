@@ -6,9 +6,9 @@ const Friend = require("../../models/Friend");
 const Chat = require("../../models/Chat");
 const dotenv = require('dotenv').config({path:path.resolve(__dirname,'../../.env')});
 const uploadDir = path.join(__dirname, "assets");
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir);
-}
+// if (!fs.existsSync(uploadDir)) {
+//   fs.mkdirSync(uploadDir);
+// }
 
 function chat(server) {
   const io = new Server(server, {

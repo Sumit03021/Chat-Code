@@ -55,9 +55,9 @@ app.use('/assets', express.static(uploadDir));
 // app.use('/assets', express.static(uploadDir));
 
 // Ensure the directory exists
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
-}
+// if (!fs.existsSync(uploadDir)) {
+//     fs.mkdirSync(uploadDir, { recursive: true });
+// }
 
 app.use(cookieParser());
 app.use(chatMessages);
