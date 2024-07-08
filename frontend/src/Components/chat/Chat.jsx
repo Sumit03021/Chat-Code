@@ -57,7 +57,6 @@ function Chat() {
 
     // Receiving message
     socket.current.on("message", (msg) => {
-      console.log("receving message");
       sessionStorage.setItem('firstMess', false);
       setMessages((prevMessages) => [...prevMessages, msg]);
     });

@@ -67,6 +67,7 @@ function chat(server) {
               return;
             }
             console.log("File uploaded successfully", filePath);
+           console.log("file supspssp");
 
             const fileMessage = {
               sourceId,
