@@ -17,7 +17,6 @@ function chat(server) {
       methods: ["GET", "POST"],
       credentials: true,
     },
-    transports:['websocket','polling'],
     connectionStateRecovery: {},
   });
 
