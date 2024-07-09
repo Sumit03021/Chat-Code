@@ -16,7 +16,8 @@ function chat(server) {
       origin: [process.env.ALLOWED_URL],
       methods: ["GET", "POST","PUT","DELETE"],
       credentials: true,
-    }
+    },
+    transports:['websocket','polling']
   });
 
   io.on("connection", (socket) => {

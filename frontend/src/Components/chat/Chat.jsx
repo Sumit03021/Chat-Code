@@ -41,7 +41,11 @@ function Chat() {
   },[targetId])
 
   useEffect(() => {
-    socket.current = io(import.meta.VITE_BACKEND_API, {
+    const websocket_local = import.meta.VITE_WEBSOCKET_LOCAL;
+    const websocket_render = import.meta.VITE_WEBSOCKET_RENDER;
+    const webSocketUrl = window.location.hostname == 'localhost' ? websocket_local : websocket_render;
+    socket.current = io(webSocketUrl, {
+      transports:['websocket','polling'],
       withCredentials:true
     });
 
@@ -59,6 +63,8 @@ function Chat() {
       sessionStorage.setItem('firstMess', false);
       setMessages((prevMessages) => [...prevMessages, msg]);
     });
+
+    
     return () => {
       socket.current.emit('leaveRoom', room);
       socket.current.disconnect();

@@ -26,12 +26,13 @@ main().then(()=>{
 .catch((err)=>{
     console.log(`error in mongodb connection ${err}`)
 });
-app.use(cors({
+const corsOptions = {
     origin:[process.env.ALLOWED_URL],
     credentials:true,
-}))
+};
+app.use(cors(corsOptions))
 
-app.options('*', cors()); // Enable preflight requests for all routes
+app.options('*', cors(corsOptions)); // Enable preflight requests for all routes
 
 // Middleware to set headers
 app.use((req, res, next) => {
@@ -49,6 +50,7 @@ app.use(methodOverride("_method"));
 
 const uploadDir = path.join(__dirname, 'controllers/sockets/assets'); 
 app.use('/assets', express.static(uploadDir));
+
 // Use /tmp directory for serverless environment
 // const uploadDir = path.join('/tmp', 'controllers/sockets/assets');
 // app.use('/assets', express.static(uploadDir));
@@ -70,6 +72,7 @@ chat(server);
 // app.get('*', (req, res) => {
 //   res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
 // });
+
 const PORT = process.env.PORT || 3000;
 
 server.listen(PORT,()=>{
