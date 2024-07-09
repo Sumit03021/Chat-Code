@@ -4,7 +4,6 @@ const mongoose= require("mongoose");
 const methodOverride = require("method-override");
 const cors= require("cors")
 const app = express();
-const fs = require('fs');
 const auth = require("./controllers/auth");
 const profile = require("./controllers/profile");
 const post= require("./controllers/post");
@@ -67,11 +66,12 @@ app.use(post);
 app.use(friendRequest);
 chat(server);
 
-app.use(express.static(path.join(__dirname, '../frontend/build')));
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
-});
+// app.use(express.static(path.join(__dirname, '../frontend/build')));
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
+// });
+const PORT = process.env.PORT || 3000;
 
-server.listen(process.env.PORT,()=>{
+server.listen(PORT,()=>{
     console.log("server connected to port");
 })

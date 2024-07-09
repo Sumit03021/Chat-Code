@@ -42,7 +42,7 @@ function Chat() {
 
   useEffect(() => {
     socket.current = io(import.meta.VITE_BACKEND_API, {
-    transports:['polling','websocket'],
+    transports:['websocket','polling'],
     withCredentials:true,
       auth: {
         serverOffset: 0
