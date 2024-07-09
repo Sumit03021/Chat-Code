@@ -14,10 +14,9 @@ function chat(server) {
   const io = new Server(server, {
     cors: {
       origin: [process.env.ALLOWED_URL],
-      methods: ["GET", "POST"],
+      methods: ["GET", "POST","PUT","DELETE"],
       credentials: true,
-    },
-    connectionStateRecovery: {},
+    }
   });
 
   io.on("connection", (socket) => {

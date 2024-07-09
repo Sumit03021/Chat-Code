@@ -42,9 +42,7 @@ function Chat() {
 
   useEffect(() => {
     socket.current = io(import.meta.VITE_BACKEND_API, {
-      auth: {
-        serverOffset: 0
-      }
+      withCredentials:true
     });
 
     const userId = localStorage.getItem("userId");
