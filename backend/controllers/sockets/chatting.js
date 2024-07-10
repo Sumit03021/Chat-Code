@@ -1,4 +1,3 @@
-const { Server } = require("socket.io");
 const fs = require("fs");
 const path = require("path");
 const { getUser } = require("../../middleware/jwt");
@@ -10,16 +9,8 @@ const uploadDir = path.join(__dirname, "assets");
 //   fs.mkdirSync(uploadDir);
 // }
 
-function chat(server) {
-  const io = new Server(server, {
-    cors: {
-      origin: [process.env.ALLOWED_URL],
-      methods: ["GET", "POST","PUT","DELETE"],
-      credentials: true,
-    },
-    transports:['websocket','polling']
-  });
-
+function chat(io) {
+  
   io.on("connection", (socket) => {
     console.log(`Client connected: ${socket.id}`);
     socket.on("joinRoom", (room) => {

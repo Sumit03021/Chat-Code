@@ -59,6 +59,16 @@ app.use('/assets', express.static(uploadDir));
 // if (!fs.existsSync(uploadDir)) {
 //     fs.mkdirSync(uploadDir, { recursive: true });
 // }
+const io = new Server(server, {
+    cors: {
+      origin: [process.env.ALLOWED_URL],
+      methods: ["GET", "POST","PUT","DELETE"],
+      credentials: true,
+    },
+    transports:['websocket','polling']
+  });
+
+app.set("io",io);
 
 app.use(cookieParser());
 app.use(chatMessages);
@@ -66,7 +76,7 @@ app.use(auth);
 app.use(profile);
 app.use(post);
 app.use(friendRequest);
-chat(server);
+chat(io);
 
 // app.use(express.static(path.join(__dirname, '../frontend/build')));
 // app.get('*', (req, res) => {
